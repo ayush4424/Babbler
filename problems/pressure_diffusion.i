@@ -47,7 +47,7 @@
   solve_type = NEWTON # Perform a Newton solve
 
   # Set PETSc parameters to optimize solver efficiency
-  #petsc_options_iname = '-pc_type -pc_hypre_type' # PETSc option pairs with values below
+  petsc_options_iname = '-pc_type -pc_hypre_type' # PETSc option pairs with values below
   #petsc_options_value = ' hypre    boomeramg'
 []
 

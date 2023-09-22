@@ -24,6 +24,7 @@
   [diffusion]
     type = DarcyPressure
     variable = pressure 
+    permeability = 0.8451e-09
   []
 []
 

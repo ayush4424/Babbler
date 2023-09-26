@@ -54,4 +54,5 @@
 
 [Outputs]
   exodus = true # Output Exodus format
+  perf_graph = true
 []

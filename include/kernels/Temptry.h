@@ -4,20 +4,19 @@
 #include "ADKernelGrad.h"
 
 /**
- * Computes the residual contribution: K / mu * grad_test * grad_u.
+ * Computes the residual contribution: K * grad_test * grad_u.
  */
-class DarcyPressure : public ADKernelGrad
+class Temptry : public ADKernelGrad
 {
 public:
 	static InputParameters validParams();
 
-	DarcyPressure(const InputParameters& parameters);
+	Temptry(const InputParameters& parameters);
 
 protected:
 	/// ADKernel objects must override precomputeQpResidual
 	virtual ADRealVectorValue precomputeQpResidual() override;
 
-	/// The variables which hold the value for K and mu
-	const Real &_permeability;
-	const Real &_viscosity;
+	/// The variables which hold the value for K
+	const Real& _thermal_conductivity;
 };

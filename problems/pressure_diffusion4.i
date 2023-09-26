@@ -7,20 +7,22 @@
   ymax=1
 []
 
-[Problem]
-  type=FEProblem
-[]
-
 [Variables]
   [Temperature]
   []
 []
 
 [Kernels]
-  [temp3]
-    type = Temptry
+  [temp4]
+    type = HeatConduction
     variable = Temperature
-    thermal_conductivity = 1
+  []
+[]
+
+[Materials]
+  [thermal]
+    type = HeatConductionMaterial
+    thermal_conductivity = 45.0
   []
 []
 
@@ -43,7 +45,7 @@
   type = Steady 
   solve_type = NEWTON 
   petsc_options_iname = '-pc_type -pc_hypre_type' 
-  petsc_options_value = ' hypre    boomeramg'
+  petsc_options_value = 'hypre    boomeramg'
 []
 
 [Outputs]

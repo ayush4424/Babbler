@@ -7,9 +7,9 @@
   ymax=1
 []
 
-[Problem]
-  type=FEProblem
-[]
+#[Problem]
+#  type=FEProblem
+#[]
 
 [Variables]
   [Temperature]
@@ -17,8 +17,8 @@
 []
 
 [Kernels]
-  [temp3]
-    type = Temptry
+  [temp5]
+    type = Temptry1
     variable = Temperature
     thermal_conductivity = 1
   []

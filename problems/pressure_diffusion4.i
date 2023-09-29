@@ -22,22 +22,34 @@
 [Materials]
   [thermal]
     type = HeatConductionMaterial
-    thermal_conductivity = 45.0
+    thermal_conductivity = 1
   []
 []
 
 [BCs]
-  [left]
-    type = ADDirichletBC 
-    variable = Temperature 
-    boundary = left 
-    value = 0
-  []
+ # [left]
+  #  type = ADDirichletBC 
+   # variable = Temperature 
+    #boundary = left 
+    #value = 0
+  #[]
   [right]
     type = ADDirichletBC
     variable = Temperature
     boundary = right
     value = 100
+  []
+  [top]
+    type = ADDirichletBC
+    variable = Temperature
+    boundary = top
+    value = 100
+  []
+  [bottom]
+    type = ADDirichletBC
+    variable = Temperature
+    boundary = bottom
+    value = 0
   []
 []
 

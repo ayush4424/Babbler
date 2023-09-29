@@ -37,6 +37,18 @@
     boundary = right
     value = 100
   []
+  [top]
+    type = ADNeumannBC
+    variable = Temperature
+    boundary = top
+    value = 10
+  []
+  [bottom]
+    type = ADNeumannBC
+    variable = Temperature
+    boundary = bottom
+    value = 5
+  []
 []
 
 [Executioner]

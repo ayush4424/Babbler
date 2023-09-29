@@ -43,13 +43,12 @@
     boundary = left
     value = 0.0
   []
-  [Pressure]
-    [right1]
-     type= NeumannBC 
-     boundary = right
-     value = -1
-    []
-  []
+ # [Pressure]
+  #  [right1]
+   #  boundary = right
+    # value = -1
+    #[]
+  #[]
 []
 
 [Materials]

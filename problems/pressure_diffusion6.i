@@ -14,36 +14,35 @@
 
 [Kernels]
   [temp4]
-    type = Temptry
+    type = HeatConduction
     variable = Temperature
+  []
+  [heat_source]
+    type = HeatSource
+    variable = Temperature
+    value = 1
+  []
+[]
+
+[Materials]
+  [thermal]
+    type = HeatConductionMaterial
     thermal_conductivity = 1
   []
 []
 
 [BCs]
-  [left]
-    type = ADDirichletBC 
-    variable = Temperature 
-    boundary = left 
-    value = 0
-  []
-  [right]
-    type = ADDirichletBC
-    variable = Temperature
-    boundary = right
-    value = 0
-  []
   [top]
     type = ADDirichletBC
     variable = Temperature
     boundary = top
-    value = 1
+    value = 15
   []
   [bottom]
     type = ADDirichletBC
     variable = Temperature
     boundary = bottom
-    value = 0
+    value = 10
   []
 []
 

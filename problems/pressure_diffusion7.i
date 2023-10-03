@@ -7,43 +7,40 @@
   ymax=1
 []
 
+[Problem]
+  type=FEProblem
+[]
+
 [Variables]
   [Temperature]
   []
 []
 
 [Kernels]
-  [temp4]
+  [temp3]
     type = Temptry
     variable = Temperature
     thermal_conductivity = 1
   []
+  [temp4]
+    type = Temptrysource
+    variable = Temperature
+    volumetric_heat = 1
+  []
 []
 
 [BCs]
-  [left]
-    type = ADDirichletBC 
-    variable = Temperature 
-    boundary = left 
-    value = 0
-  []
-  [right]
-    type = ADDirichletBC
-    variable = Temperature
-    boundary = right
-    value = 0
-  []
   [top]
     type = ADDirichletBC
     variable = Temperature
     boundary = top
-    value = 1
+    value = 15
   []
   [bottom]
     type = ADDirichletBC
     variable = Temperature
     boundary = bottom
-    value = 0
+    value = 10
   []
 []
 
@@ -51,7 +48,7 @@
   type = Steady 
   solve_type = NEWTON 
   petsc_options_iname = '-pc_type -pc_hypre_type' 
-  petsc_options_value = 'hypre    boomeramg'
+  petsc_options_value = ' hypre    boomeramg'
 []
 
 [Outputs]

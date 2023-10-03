@@ -1,8 +1,8 @@
 [Mesh]
   type=GeneratedMesh
   dim=2
-  nx=1
-  ny=1
+  nx=10
+  ny=10
   xmax=1
   ymax=1
 []
@@ -18,36 +18,25 @@
 
 [Kernels]
   [temp3]
-    type = Temptry
+    type = Temptry1
     variable = Temperature
     thermal_conductivity = 1
+    heatsource = 1
   []
 []
 
 [BCs]
-  [left]
-    type = ADDirichletBC 
-    variable = Temperature 
-    boundary = left 
-    value = 0
-  []
-  [right]
+  [top]
     type = ADDirichletBC
     variable = Temperature
-    boundary = right
-    value = 100
-  []
-  [top]
-    type = ADNeumannBC
-    variable = Temperature
     boundary = top
-    value = 10
+    value = 15
   []
   [bottom]
-    type = ADNeumannBC
+    type = ADDirichletBC
     variable = Temperature
     boundary = bottom
-    value = 5
+    value = 10
   []
 []
 

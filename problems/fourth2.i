@@ -1,5 +1,5 @@
 [Mesh]
-    file="new.msh"
+    file="fourth.msh"
 []
 
 
@@ -44,9 +44,9 @@
     value = 0.0
   []
   [Pressure]
-    [right1]
-      boundary = right
-      function = -1
+    [inner surfacel]
+     boundary = inner surface
+     function = 1
     []
   []
 []

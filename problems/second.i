@@ -5,7 +5,7 @@
 
 [GlobalParams]
   displacements = 'disp_x disp_y'
-  out_of_plane_strain = strain_zz
+  #out_of_plane_strain = strain_zz
 []
 
 [Variables]
@@ -17,16 +17,17 @@
     order = FIRST
     family = LAGRANGE
   []
-  [strain_zz]
-  []
+  #[strain_zz]
+  #[]
 []
 
 [Modules/TensorMechanics/Master]
   [all]
-    planar_formulation= WEAK_PLANE_STRESS
+    planar_formulation= PLANE_STRAIN
     strain= SMALL
     add_variables = true
-    generate_output='vonmises_stress stress_xx stress_yy stress_xy'
+    #use_displaced_mesh = true
+    generate_output='vonmises_stress stress_xx stress_yy stress_xy stress_zz strain_zz'
   []
 []
 
@@ -44,9 +45,13 @@
     value = 0.0
   []
   [Pressure]
-    [right1]
-      boundary = right
-      function = -1
+    [rightl]
+     boundary = right
+     function = -1
+    []
+    [up]
+     boundary = top
+     function = t
     []
   []
 []
@@ -55,7 +60,7 @@
   [Elasticity_tensor]
     type = ComputeIsotropicElasticityTensor
     youngs_modulus = 1000
-    poissons_ratio=0.25
+    poissons_ratio=0.3
   []
   [stress]
     type = ComputeLinearElasticStress

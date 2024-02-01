@@ -7,8 +7,10 @@ Temptry1::validParams()
 {
     InputParameters params = ADKernel::validParams();
     params.addClassDescription("Compute the diffusion term for Temptry1 equation");
-    params.addRequiredParam<Real>("thermal_conductivity", "The thermal_conductivity ($K$) of the medium.");
-    params.addParam<Real>("heatsource", 0, "The heat stored per unit volume of the medium.");
+    params.addRequiredParam<Real>("thermal_conductivity", "The thermal_conductivity"
+        "($K$) of the medium.");
+    params.addParam<Real>("heatsource", 0, "The heat stored per unit volume"
+        "of the medium.");
     return params;
 }
 

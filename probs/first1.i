@@ -44,9 +44,10 @@
     value = 0.0
   []
   [Pressure]
-    [right1]
+    [right]
+      type = Pressure
       boundary = right
-      function = -1
+      function = -1000000
     []
   []
 []
@@ -54,8 +55,8 @@
 [Materials]
   [Elasticity_tensor]
     type = ComputeIsotropicElasticityTensor
-    youngs_modulus = 1000
-    poissons_ratio=0.25
+    youngs_modulus = 210e9
+    poissons_ratio=0.3
   []
   [stress]
     type = ComputeLinearElasticStress

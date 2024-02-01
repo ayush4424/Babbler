@@ -14,7 +14,7 @@
 
 [Kernels]
   [temp4]
-    type = Temptry
+    type = Temptry1
     variable = Temperature
     thermal_conductivity = 1
   []

@@ -35,14 +35,14 @@
   [top]
     type = ADDirichletBC
     variable = Temperature
-    boundary = top
-    value = 15
+    boundary = right
+    value = 1
   []
   [bottom]
     type = ADDirichletBC
     variable = Temperature
-    boundary = bottom
-    value = 10
+    boundary = left
+    value = 0
   []
 []
 

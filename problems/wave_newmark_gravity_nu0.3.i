@@ -67,7 +67,7 @@
 [Kernels]
   [./TensorMechanics]
     displacements = 'disp_x disp_y'
-	planar_formulation = PLANE_STRAIN
+    planar_formulation = PLANE_STRAIN
   [../]
   [./inertia_x]
     type = InertialForce

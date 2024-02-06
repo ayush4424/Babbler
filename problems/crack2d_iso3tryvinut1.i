@@ -3,8 +3,8 @@
   [gen]
     type = GeneratedMeshGenerator
     dim = 2
-    nx = 100
-    ny = 100
+    nx = 10
+    ny = 10
     ymax = 1
   []
 []
@@ -79,8 +79,8 @@
 [Functions]
   [top_pull]
     type = PiecewiseLinear
-    x = '  0   0.05   0.1'
-    y = '0 -1   -1'
+    x = '  0 0.025 0.05 0.075 0.1'
+    y = '0 -0.5 -1 -1 -1'
   []
 []
 
@@ -137,9 +137,9 @@
     expression = 'gc_prop * l'
   [../]
   [./elasticity_tensor]
-    type = ComputeElasticityTensor
-    C_ijkl = '576.9 384.6 0'
-    fill_method = symmetric_isotropic
+    youngs_modulus = 1000
+    poissons_ratio = 0.3
+    type = ComputeIsotropicElasticityTensor
   [../]
   [./damage_stress]
     type = ComputeLinearElasticPFFractureStress
@@ -224,11 +224,11 @@
   solve_type = PJFNK
   petsc_options_iname = '-pc_type  -snes_type'
   petsc_options_value = 'lu vinewtonrsls'
-
+  start_time = 0.0
+  end_time = 0.1
   nl_rel_tol = 1e-8
   l_max_its = 10
   nl_max_its = 10
-
   dt = 1e-4
   dtmin = 1e-4
   num_steps = 1000

@@ -43,33 +43,13 @@
 []
 
 [AuxVariables]
-  [./vel_x]
-   [./InitialCondition]
-      type = ConstantIC
-      value = 2
-   [../]
-  [../]
-  [./accel_x]
-  [../]
-  [./vel_y]
-   [./InitialCondition]
-      type = ConstantIC
-      value = 2
-   [../]
-  [../]
-  [./accel_y]
-  [../]
-  [./stress_xx]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./strain_xx]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
   [./resid_x]
   [../]
   [./resid_y]
+  [../]
+  [./bounds_dummy]
+    order = FIRST
+    family = LAGRANGE
   [../]
 []
 
@@ -86,60 +66,20 @@
     component = 1
     c = c
   [../]
+  [./off_disp]
+    type = AllenCahnElasticEnergyOffDiag
+    variable = c
+    displacements = 'disp_x disp_y'
+    mob_name = L
+  [../]
 []
 
-[AuxKernels]
-  [./accel_x]
-    type = NewmarkAccelAux
-    variable = accel_x
-    displacement = disp_x
-    velocity = vel_x
-    beta = 0.25
-    execute_on = timestep_end
-  [../]
-  [./vel_x]
-    type = NewmarkVelAux
-    variable = vel_x
-    acceleration = accel_x
-    gamma = 0.5
-    execute_on = timestep_end
-  [../]
-  [./accel_y]
-    type = NewmarkAccelAux
-    variable = accel_y
-    displacement = disp_y
-    velocity = vel_y
-    beta = 0.25
-    execute_on = timestep_end
-  [../]
-  [./vel_y]
-    type = NewmarkVelAux
-    variable = vel_y
-    acceleration = accel_y
-    gamma = 0.5
-    execute_on = timestep_end
-  [../]
-  [./stress_xx]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    variable = stress_xx
-    index_i = 0
-    index_j = 0
-  [../]
-  [./strain_xx]
-    type = RankTwoAux
-    rank_two_tensor = total_strain
-    variable = strain_xx
-    index_i = 0
-    index_j = 0
-  [../]
-[]
 [BCs]
   [./ydisp]
-    type = FunctionDirichletBC
+    type = FunctionNeumannBC
     variable = disp_y
     boundary = top
-    function = 't'
+    function = t
   [../]
   [./yfix]
     type = DirichletBC
@@ -153,14 +93,6 @@
     boundary = top
     value = 0
   [../]
-[]
-
-[ICs]
-  [xdisp]
-    type=ConstantIC
-    variable=disp_x
-    value=0
-  []
 []
 
 [Materials]
@@ -182,9 +114,9 @@
     expression = 'gc_prop * l'
   [../]
   [./elasticity_tensor]
-    type = ComputeElasticityTensor
-    C_ijkl = '120.0 80.0'
-    fill_method = symmetric_isotropic
+   youngs_modulus = 210
+   poissons_ratio = 0.3125
+   type = ComputeIsotropicElasticityTensor
   [../]
   [./damage_stress]
     type = ComputeLinearElasticPFFractureStress
@@ -193,6 +125,7 @@
     D_name = 'degradation'
     F_name = 'local_fracture_energy'
     decomposition_type = strain_spectral
+    use_snes_vi_solver = true
   [../]
   [./degradation]
     type = DerivativeParsedMaterial
@@ -217,6 +150,27 @@
     sum_materials = 'elastic_energy local_fracture_energy'
     derivative_order = 2
     property_name = F
+  [../]
+  [./density]
+    type = GenericConstantMaterial
+    prop_names = 'density'
+    prop_values = '1'
+  [../]
+[]
+
+[Bounds]
+  [./c_upper_bound]
+    type = ConstantBoundsAux
+    variable = bounds_dummy
+    bounded_variable = c
+    bound_type = upper
+    bound_value = 1.0
+  [../]
+  [./c_lower_bound]
+    type = VariableOldValueBoundsAux
+    variable = bounds_dummy
+    bounded_variable = c
+    bound_type = lower
   [../]
 []
 
@@ -244,16 +198,16 @@
   type = Transient
 
   solve_type = PJFNK
-  petsc_options_iname = '-pc_type -ksp_gmres_restart -sub_ksp_type -sub_pc_type -pc_asm_overlap'
-  petsc_options_value = 'asm      31                  preonly       lu           1'
+  petsc_options_iname = '-pc_type  -snes_type'
+  petsc_options_value = 'lu vinewtonrsls'
 
   nl_rel_tol = 1e-8
   l_max_its = 10
   nl_max_its = 10
 
-  dt = 1e-4
-  dtmin = 1e-4
-  num_steps = 2
+  dt = 1e-3
+  dtmin = 1e-3
+  num_steps = 50
 []
 
 [Outputs]

@@ -154,7 +154,7 @@
     type = FunctionDirichletBC
     variable = disp_y
     boundary = top
-    function = '1'
+    function = '2e-4*t'
   [../]
   [./yfix]
     type = DirichletBC
@@ -203,9 +203,9 @@
   l_max_its = 10
   nl_max_its = 10
 
-  dt = 1e-4
-  dtmin = 1e-4
-  num_steps = 10
+  dt = 1e-2
+  dtmin = 1e-2
+  num_steps = 100
 []
 
 [Outputs]

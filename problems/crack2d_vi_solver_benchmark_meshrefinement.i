@@ -3,8 +3,9 @@
   [gen]
     type = GeneratedMeshGenerator
     dim = 2
-    nx = 20
-    ny = 20
+    nx = 150
+    ny = 150
+    xmax = 1
     ymax = 1
   []
 []
@@ -30,9 +31,23 @@
         strain = SMALL
         additional_generate_output = 'stress_yy'
         save_in = 'resid_x resid_y'
-        planar_formulation = PLANE_STRAIN
       [../]
     [../]
+  [../]
+[]
+
+[ICs]
+  [./c_ic]
+    type = FunctionIC
+    function = ic
+    variable = c
+  [../]
+[]
+
+[Functions]
+  [./ic]
+    type = ParsedFunction
+    expression = 'if(x>0.5 & y < 0.5075 & y > 0.4925,1,0)'
   [../]
 []
 
@@ -60,68 +75,34 @@
     component = 1
     c = c
   [../]
-  [./off_disp]
-    type = AllenCahnElasticEnergyOffDiag
-    variable = c
-    displacements = 'disp_x disp_y'
-    mob_name = L
-  [../]
-[]
-
-[ICs]
-  [./u_ic]
-    type = ConstantIC
-    variable = disp_y
-    value = 0
-  [../]
-[]
-
-[Functions]
-  [top_pull]
-    type = PiecewiseLinear
-    x = '  0 0.025 0.05 0.075 0.1'
-    y = '0 0.005 0.01 0.01 0.01'
-  []
 []
 
 [BCs]
-  [./yfixbottom]
-    type = DirichletBC
-    variable = disp_y
-    boundary = bottom
-    value = 0
-  [../]
-  [./xfixbottom]
-    type = DirichletBC
-    variable = disp_x
-    boundary = bottom
-    value = 0
-  [../]
-  [./xfixleft]
-    type = DirichletBC
-    variable = disp_x
-    boundary = left
-    value = 0
-  [../]
-  [./xfixright]
-    type = DirichletBC
-    variable = disp_x
-    boundary = right
-    value = 0
-  [../]
-  [u_top_pull]
-    type= FunctionDirichletBC
+  [./ydisp]
+    type = FunctionDirichletBC
     variable = disp_y
     boundary = top
-    function = top_pull
-  []
+    function = 't'
+  [../]
+  [./yfix]
+    type = DirichletBC
+    variable = disp_y
+    boundary = bottom
+    value = 0
+  [../]
+  [./xfix]
+    type = DirichletBC
+    variable = disp_x
+    boundary = 'top bottom'
+    value = 0
+  [../]
 []
 
 [Materials]
   [./pfbulkmat]
     type = GenericConstantMaterial
     prop_names = 'gc_prop l visco'
-    prop_values = '25e-3 0.1 1e-20'
+    prop_values = '2.7e-3 0.015 1e-8'
   [../]
   [./define_mobility]
     type = ParsedMaterial
@@ -136,9 +117,9 @@
     expression = 'gc_prop * l'
   [../]
   [./elasticity_tensor]
-    youngs_modulus = 1000
-    poissons_ratio = 0.3
-    type = ComputeIsotropicElasticityTensor
+    type = ComputeElasticityTensor
+    C_ijkl = '121.2 80.77 0'
+    fill_method = symmetric_isotropic
   [../]
   [./damage_stress]
     type = ComputeLinearElasticPFFractureStress
@@ -147,7 +128,6 @@
     D_name = 'degradation'
     F_name = 'local_fracture_energy'
     decomposition_type = strain_spectral
-    #use_current_history_variable = true
     use_snes_vi_solver = true
   [../]
   [./degradation]
@@ -156,7 +136,7 @@
     coupled_variables = 'c'
     expression = '(1.0-c)^2*(1.0 - eta) + eta'
     constant_names       = 'eta'
-    constant_expressions = '0.0'
+    constant_expressions = '1e-6'
     derivative_order = 2
   [../]
   [./local_fracture_energy]
@@ -174,11 +154,6 @@
     derivative_order = 2
     property_name = F
   [../]
-  [./density]
-    type = GenericConstantMaterial
-    prop_names = 'density'
-    prop_values = '1'
-  [../]
 []
 
 [Postprocessors]
@@ -191,6 +166,12 @@
     type = NodalSum
     variable = resid_y
     boundary = 2
+  [../]
+  [./react_y]
+    type = SidesetReaction
+    direction = '0 1 0'
+    stress_tensor = stress
+    boundary = top
   [../]
 []
 
@@ -223,14 +204,14 @@
   solve_type = PJFNK
   petsc_options_iname = '-pc_type  -snes_type'
   petsc_options_value = 'lu vinewtonrsls'
-  start_time = 0.0
-  end_time = 0.1
+
   nl_rel_tol = 1e-8
   l_max_its = 10
   nl_max_its = 10
-  dt = 1e-3
-  dtmin = 1e-3
-  num_steps = 100
+
+  dt = 5e-4
+  dtmin = 1e-8
+  num_steps = 16
 []
 
 [Outputs]

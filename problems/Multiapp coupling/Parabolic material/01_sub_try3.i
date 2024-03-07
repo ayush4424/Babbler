@@ -17,8 +17,14 @@
 
 [Kernels]
   [diff]
-    type = Diffusion
+    type = ADDiffusion
     variable = v
+  []
+  [source]
+    type = ADBodyForce
+    variable = v
+    value = -1
+    function = 1
   []
 []
 
@@ -39,8 +45,8 @@
 
 [Executioner]
   type = Transient
-  end_time = 1
-  dt = 1
+  end_time = 0.1
+  dt = 0.1
   
   solve_type = 'PJFNK'
 

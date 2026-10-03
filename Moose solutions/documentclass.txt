@@ -1,0 +1,25 @@
+\documentclass{report}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath,amssymb}
+\usepackage{amsfonts}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{mathrsfs}
+\usepackage{subfig}
+ \geometry{
+ a4paper,
+ total={140mm,230mm},
+ left=35mm,
+ top=45mm,
+ }
+\usepackage{longtable}
+
+\usepackage{iftex}
+\usepackage{biblatex}
+\addbibresource{refmtp.bib}
+\title{\textbf{2-D Impact modeling using discrete elements and its coupling with Phase-field method of Fracture}}
+\author{\textit{Ayush Saxena}}
+\date{}
+
+\begin{document}
+

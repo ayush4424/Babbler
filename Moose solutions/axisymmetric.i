@@ -1,0 +1,67 @@
+[Mesh]
+  file="circle.msh"
+[]
+
+[Variables]
+  [T]
+  []
+[]
+
+[Kernels]
+  [heat_conduction]
+    type = HeatConduction
+    variable = T
+  []
+  [time_derivative]
+    type = HeatConductionTimeDerivative
+    variable = T
+  []
+[]
+
+[Materials]
+  [thermal]
+    type = HeatConductionMaterial
+    thermal_conductivity = 50.0
+    specific_heat = 4287.5
+  []
+  [density]
+    type = GenericConstantMaterial
+    prop_names = 'density'
+    prop_values = 2000
+  []
+[]
+
+[BCs]
+  [t_outer]
+    type = FunctionDirichletBC
+    variable = T
+    value = '100'
+    boundary = 'outer_surface'
+  []
+[]
+
+[Executioner]
+  type = Transient
+  end_time = 100
+  dt = 1
+[]
+
+[VectorPostprocessors]
+  [t_sampler]
+    type = LineValueSampler
+    variable = T
+    start_point = '0 0 0'
+    end_point = '0.1 0 0'
+    num_points = 20
+    sort_by = x
+  []
+[]
+
+[Outputs]
+  exodus = true
+  [csv]
+    type = CSV
+    file_base = axisymmetric_out
+    execute_on = final
+  []
+[]

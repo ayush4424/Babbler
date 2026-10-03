@@ -39,11 +39,7 @@
   [Pressure]
     [top]
       boundary = top
-      if (t<3) {
-      function = 1e7*t
-      } else {
-      function = 2e7*t
-      }
+      function = 'if(t<3, 1e7*t, 2e7*t)'
     []
   []
 []

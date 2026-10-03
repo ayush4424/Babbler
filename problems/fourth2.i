@@ -44,8 +44,8 @@
     value = 0.0
   []
   [Pressure]
-    [inner surfacel]
-     boundary = inner surface
+    [inner_surface]
+     boundary = 7 # 'inner surface' in fourth.msh; names with spaces can't be used here
      function = 1
     []
   []

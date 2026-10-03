@@ -45,7 +45,7 @@
   []
   [Pressure]
     [rightl]
-     boundary = outer surface
+     boundary = 6 # 'outer surface' in fourthf.msh; names with spaces can't be used here
      function = -100
     []
   []

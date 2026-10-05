@@ -3,14 +3,15 @@
 #   R        hole radius in mm
 #   n_procs  MPI ranks (default 2)
 #   workdir  where meshes and results go (default ./runs)
-# Needs: python3 with gmsh, and RACCOON (set RACCOON=/path/to/raccoon-opt).
+# Needs: python with gmsh (PYTHON=..., default python3) and RACCOON (RACCOON=/path/to/raccoon-opt).
 set -euo pipefail
 R=$1; NP=${2:-2}; HERE=$(cd "$(dirname "$0")" && pwd); WORK=${3:-$HERE/runs}
 RACCOON=${RACCOON:-raccoon-opt}
+PYTHON=${PYTHON:-python3}
 L=0.08278
 mkdir -p "$WORK/R$R" && cd "$WORK/R$R"
 cp "$HERE/elasticity.i" "$HERE/fracture.i" .
-python3 "$HERE/make_mesh.py" "$R" "$L" "$PWD/hole.msh"
+"$PYTHON" "$HERE/make_mesh.py" "$R" "$L" "$PWD/hole.msh"
 # Coarse steps while the plate is certainly still elastic (nominal stress < 0.29 sigma_c),
 # then fine steps through damage initiation and failure.
 start=$(date +%s)

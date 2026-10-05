@@ -19,3 +19,21 @@ Run one case (hole radius in mm, MPI ranks):
     RACCOON=/path/to/raccoon-opt ./run_case.sh 0.2 2
 
 Nominal (far-field) stress = reaction force on `top` / 20 mm (per unit thickness).
+
+## Results (`results/`)
+
+| R (mm) | R / l | Failure stress | / sigma_c | / strength criterion (sigma_c / K_t) |
+|---|---|---|---|---|
+| 0.02 | 0.24 | 342.3 MPa | 0.98 | 2.93 |
+| 0.06 | 0.72 | 293.4 MPa | 0.84 | 2.51 |
+| 0.2 | 2.4 | 203.7 MPa | 0.58 | 1.75 |
+| 0.6 | 7.2 | 151.4 MPa | 0.43 | 1.30 |
+| 2.0 | 24 | 125.4 MPa | 0.36 | 1.08 |
+
+Tiny holes barely weaken the plate (failure at almost sigma_c); large holes approach
+the stress-concentration prediction sigma_c / K_t (about 117 MPa); the transition sits
+around R of a few l, i.e. near the Irwin length (K_IC / sigma_c)^2 = 0.22 mm. In every
+case the crack nucleated at the hole edge perpendicular to the load and ran unstably
+across the ligament. Each case took 7-13 minutes on 1-2 cores.
+
+    python3 analyze.py runs/ results/

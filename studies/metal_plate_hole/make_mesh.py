@@ -62,7 +62,7 @@ f.setAsBackgroundMesh(fmin)
 gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)
 gmsh.option.setNumber("Mesh.MeshSizeFromPoints", 0)
 gmsh.option.setNumber("Mesh.RecombineAll", 1)          # quadrilaterals -> hexahedra after extrusion
-gmsh.option.setNumber("Mesh.RecombinationAlgorithm", 1)
+gmsh.option.setNumber("Mesh.RecombinationAlgorithm", 3)  # blossom full-quad: no leftover triangles
 gmsh.option.setNumber("Mesh.Algorithm", 8)
 gmsh.model.mesh.generate(2)
 gmsh.option.setNumber("Mesh.MshFileVersion", 4.1)

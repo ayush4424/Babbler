@@ -17,7 +17,9 @@ n = 27.98            # power law sigma = sigma_y (1 + ep/ep0)^(1/n), fitted to 2
 ep0 = 0.00272
 Gc = 10.88           # K_IC^2 (1 - nu^2) / E with K_IC = 29 MPa sqrt(m)
 psic = 37.4          # damage onset: elastic + plastic work at ~12 % plastic strain (uniaxial)
-l = 0.4              # regularization length [mm]; PF-CZM response is nearly l-independent
+l = 0.05             # regularization length [mm]. PF-CZM needs m = 3 Gc / (8 l psic) > ~2, i.e.
+                     # l < ~0.055 mm here; l = 0.4 (m = 0.27) gave an unstable snap-back and the
+                     # damage solve never converged. Mesh: 0.025 mm along the crack path.
 
 [MultiApps]
   [fracture]
@@ -245,7 +247,8 @@ l = 0.4              # regularization length [mm]; PF-CZM response is nearly l-i
   end_time = 1.0
   [TimeStepper]
     type = FunctionDT
-    function = 'if(t < 0.3, 5e-3, 2e-3)'
+    # elastic-plastic part in large steps, fine steps from just before damage onset (~0.35 mm)
+    function = 'if(t < 0.33, 1e-2, 1e-3)'
   []
   fixed_point_max_its = 20
   accept_on_max_fixed_point_iteration = true

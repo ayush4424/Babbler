@@ -3,7 +3,7 @@ mesh_file = plate.msh
 thickness = 2.0
 Gc = 10.88
 psic = 37.4
-l = 0.4
+l = 0.05
 
 [Mesh]
   [file]
@@ -107,8 +107,6 @@ l = 0.4
   automatic_scaling = true
   nl_rel_tol = 1e-8
   nl_abs_tol = 1e-10
-  # the bounded (VI) solve can fail its line search when damage first appears; plain Newton is robust here
-  line_search = none
 []
 
 [Outputs]

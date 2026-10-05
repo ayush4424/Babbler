@@ -15,6 +15,9 @@ p.add_argument("--W", type=float, default=40.0)
 p.add_argument("--H", type=float, default=40.0)
 p.add_argument("--h_hole", type=float, default=0.25, help="element size at the hole")
 p.add_argument("--h_max", type=float, default=2.0)
+p.add_argument("--band_h", type=float, default=0.0,
+               help="if > 0: element size in a band along y = 0 (the expected crack path)")
+p.add_argument("--band_height", type=float, default=1.0, help="height of that band [mm]")
 a = p.parse_args()
 R, X, Y = a.R, a.W / 2, a.H / 2
 
@@ -42,7 +45,20 @@ f.setNumber(t, "SizeMin", a.h_hole)
 f.setNumber(t, "SizeMax", a.h_max)
 f.setNumber(t, "DistMin", 0.5 * R)
 f.setNumber(t, "DistMax", 2.5 * R)
-f.setAsBackgroundMesh(t)
+fields = [t]
+if a.band_h > 0:
+    b = f.add("Box")
+    f.setNumber(b, "VIn", a.band_h)
+    f.setNumber(b, "VOut", a.h_max)
+    f.setNumber(b, "XMin", R - a.band_height)
+    f.setNumber(b, "XMax", X)
+    f.setNumber(b, "YMin", 0.0)
+    f.setNumber(b, "YMax", a.band_height)
+    f.setNumber(b, "Thickness", 4 * a.band_height)
+    fields.append(b)
+fmin = f.add("Min")
+f.setNumbers(fmin, "FieldsList", fields)
+f.setAsBackgroundMesh(fmin)
 gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)
 gmsh.option.setNumber("Mesh.MeshSizeFromPoints", 0)
 gmsh.option.setNumber("Mesh.RecombineAll", 1)          # quadrilaterals -> hexahedra after extrusion

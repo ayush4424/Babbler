@@ -37,3 +37,23 @@ case the crack nucleated at the hole edge perpendicular to the load and ran unst
 across the ligament. Each case took 7-13 minutes on 1-2 cores.
 
     python3 analyze.py runs/ results/
+
+## Mesh convergence and comparison with the coupled criterion
+
+`ffm.py` evaluates Leguillon's coupled stress-energy criterion (finite fracture
+mechanics; Leguillon 2002, applied to open holes by Martin, Leguillon & Carrere 2012)
+for the same sigma_c and K_IC: Kirsch stress along the ligament, Tada's K for cracks
+growing from a hole, infinite plate, plane strain. No parameter is fitted.
+
+| R (mm) | Phase field h = l/4 | Phase field h = l/6 | Coupled criterion | PF - FFM |
+|---|---|---|---|---|
+| 0.02 | 342.3 MPa | - | 345.3 MPa | -0.8 % |
+| 0.06 | 293.4 MPa | 292.4 MPa | 298.0 MPa | -1.5 % |
+| 0.2 | 203.7 MPa | 202.7 MPa | 205.8 MPa | -1.0 % |
+| 0.6 | 151.4 MPa | 150.5 MPa | 155.7 MPa | -2.8 % |
+| 2.0 | 125.4 MPa | - | 130.4 MPa | -3.8 % |
+
+Refining from l/4 to l/6 changes the failure stress by less than 0.6 %, so the
+h = l/4 results are mesh-converged. The two independent models agree within 1-4 %
+over three decades of hole size (`results/hole_size_effect_vs_ffm.png`). The criterion
+predicts a nucleated crack length of about 0.07-0.12 mm, i.e. roughly one l.

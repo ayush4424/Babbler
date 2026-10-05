@@ -9,9 +9,10 @@ R=$1; NP=${2:-2}; HERE=$(cd "$(dirname "$0")" && pwd); WORK=${3:-$HERE/runs}
 RACCOON=${RACCOON:-raccoon-opt}
 PYTHON=${PYTHON:-python3}
 L=0.08278
+EPL=${EPL:-4}   # elements per l in the crack band (mesh convergence: EPL=6)
 mkdir -p "$WORK/R$R" && cd "$WORK/R$R"
 cp "$HERE/elasticity.i" "$HERE/fracture.i" .
-"$PYTHON" "$HERE/make_mesh.py" "$R" "$L" "$PWD/hole.msh"
+"$PYTHON" "$HERE/make_mesh.py" "$R" "$L" "$PWD/hole.msh" --elems_per_l "$EPL"
 # Coarse steps while the plate is certainly still elastic (nominal stress < 0.29 sigma_c),
 # then fine steps through damage initiation and failure.
 start=$(date +%s)

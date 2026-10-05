@@ -48,6 +48,8 @@ nsteps = 120
   [all]
     strain = FINITE
     add_variables = true
+    # AD gives the exact (consistent) Jacobian for finite-strain plasticity -> quadratic Newton
+    use_automatic_differentiation = true
     generate_output = 'vonmises_stress stress_yy'
   []
 []
@@ -61,7 +63,7 @@ nsteps = 120
 
 [AuxKernels]
   [effective_plastic_strain]
-    type = MaterialRealAux
+    type = ADMaterialRealAux
     variable = effective_plastic_strain
     property = effective_plastic_strain
   []
@@ -106,24 +108,24 @@ nsteps = 120
 
 [Materials]
   [elasticity]
-    type = ComputeIsotropicElasticityTensor
+    type = ADComputeIsotropicElasticityTensor
     youngs_modulus = ${E}
     poissons_ratio = ${nu}
   []
   [plasticity]
-    type = IsotropicPlasticityStressUpdate
+    type = ADIsotropicPlasticityStressUpdate
     yield_stress = 276
     hardening_function = hardening
   []
   [stress]
-    type = ComputeMultipleInelasticStress
+    type = ADComputeMultipleInelasticStress
     inelastic_models = plasticity
   []
 []
 
 [Postprocessors]
   [force]
-    type = SidesetReaction
+    type = ADSidesetReaction
     direction = '0 1 0'
     stress_tensor = stress
     boundary = top
@@ -154,7 +156,7 @@ nsteps = 120
   petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   petsc_options_value = 'lu       superlu_dist'
   nl_rel_tol = 1e-8
-  nl_abs_tol = 1e-8
+  nl_abs_tol = 1e-6   # residual is a force in N; 1e-6 N is far below the 10^3-10^4 N load
   l_max_its = 50
   start_time = 0
   end_time = 1
